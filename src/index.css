@@ -1,0 +1,11 @@
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
+  background: #ebebed;
+}
