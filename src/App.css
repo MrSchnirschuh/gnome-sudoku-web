@@ -1,201 +1,186 @@
-.app-shell {
-  --window-bg: #f6f5f4;
-  --view-bg: #ffffff;
-  --card-border: #d6d3d1;
-  --text-color: #2e3436;
+:root {
+  --bg: #f6f5f4;
+  --panel: #ffffff;
+  --text: #1d1d1d;
+  --muted: #606060;
   --accent: #3584e4;
-  --accent-soft: color-mix(in srgb, var(--accent) 15%, transparent);
-  --conflict: #c01c28;
-  --related: #f1f4f8;
-  --given: #4f5660;
-  --button-bg: #ebebeb;
-  --button-hover: #e1e1e1;
-
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem;
-  color: var(--text-color);
+  --accent-soft: #dfeaf9;
+  --line: #cfd2d7;
+  --line-strong: #9fa6af;
+  --danger: #c01c28;
+  --focus: #1a5fb4;
 }
 
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: end;
-  background: var(--window-bg);
-  padding: 0.75rem;
-  border: 1px solid var(--card-border);
+.app {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1rem;
+  color: var(--text);
+}
+
+.titlebar {
+  padding: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: 0.75rem;
 }
 
-.field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.875rem;
+.titlebar h1 {
+  margin: 0;
+  font-size: 1.65rem;
 }
 
+.titlebar p {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.controls label {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+button,
 select,
-button {
-  border: 1px solid #b6b6b3;
-  background: var(--button-bg);
-  color: var(--text-color);
+input {
+  font: inherit;
+}
+
+button,
+select {
+  border: 1px solid var(--line-strong);
+  background: #fdfdfd;
   border-radius: 0.5rem;
-  font-size: 0.95rem;
-  padding: 0.45rem 0.7rem;
+  padding: 0.35rem 0.65rem;
 }
 
 button:hover,
 select:hover {
-  background: var(--button-hover);
+  background: #f5f6f7;
 }
 
-button[disabled] {
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+.cell:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+button:disabled {
   opacity: 0.55;
 }
 
-button[aria-pressed='true'] {
-  border-color: var(--accent);
+.timer {
+  margin-left: auto;
+  font-weight: 700;
   background: var(--accent-soft);
+  border: 1px solid #b5caf0;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.5rem;
 }
 
-.hidden-input {
-  display: none;
+.timer-toggle {
+  margin-left: 0.2rem;
 }
 
-.status-panel {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem;
-}
-
-.status-item {
-  border: 1px solid var(--card-border);
-  background: var(--view-bg);
-  border-radius: 0.6rem;
-  padding: 0.6rem 0.75rem;
+.meta {
   display: flex;
-  justify-content: space-between;
   gap: 1rem;
-}
-
-.status-item span {
-  color: #6e6f72;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(9, minmax(34px, 1fr));
-  width: min(100%, 680px);
-  align-self: center;
-  border: 2px solid #5f6368;
-  background: var(--view-bg);
-}
-
-.board:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  border: 2px solid var(--line-strong);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: var(--panel);
 }
 
 .cell {
-  position: relative;
   aspect-ratio: 1 / 1;
-  border: 1px solid #b5b8bd;
-  padding: 0;
-  border-radius: 0;
-  background: var(--view-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  font-weight: 500;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 0.1rem;
 }
 
-.cell:nth-child(3n) {
-  border-right-width: 2px;
-  border-right-color: #5f6368;
+.cell.box-right {
+  border-right: 2px solid var(--line-strong);
 }
 
-.cell:nth-child(9n) {
-  border-right-width: 1px;
-}
-
-.cell:nth-child(n + 19):nth-child(-n + 27),
-.cell:nth-child(n + 46):nth-child(-n + 54) {
-  border-bottom-width: 2px;
-  border-bottom-color: #5f6368;
-}
-
-.cell.related {
-  background: var(--related);
+.cell.box-bottom {
+  border-bottom: 2px solid var(--line-strong);
 }
 
 .cell.selected {
   background: var(--accent-soft);
-  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
-.cell.given .cell-value {
-  color: var(--given);
-  font-weight: 700;
+.cell.given {
+  background: #f1f3f5;
+  font-weight: 800;
 }
 
 .cell.conflict {
-  background: color-mix(in srgb, var(--conflict) 20%, #ffffff);
+  color: var(--danger);
+  background: #fae8e9;
 }
 
-.cell.same-value:not(.selected) {
-  background: color-mix(in srgb, var(--accent) 12%, #ffffff);
+.notes {
+  display: block;
+  font-size: 0.45rem;
+  line-height: 1.35;
+  color: #666;
+  letter-spacing: 0.01rem;
 }
 
-.notes-grid {
-  width: 100%;
-  height: 100%;
-  padding: 0.2rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  color: #6e7278;
-  font-size: clamp(0.45rem, 1.2vw, 0.72rem);
-  line-height: 1;
-}
-
-.note-value {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.keypad {
-  width: min(100%, 680px);
-  align-self: center;
+.number-pad {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
-.help-panel {
-  font-size: 0.9rem;
-  border: 1px solid var(--card-border);
-  border-radius: 0.6rem;
-  padding: 0.6rem 0.75rem;
-  background: var(--window-bg);
+.help {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.hidden {
+  display: none;
 }
 
 @media (max-width: 720px) {
-  .status-panel {
-    grid-template-columns: 1fr;
+  .app {
+    padding: 0.65rem;
   }
 
-  .toolbar {
-    align-items: stretch;
+  .cell {
+    font-size: 1rem;
   }
 
-  .toolbar button,
-  .toolbar select {
-    width: 100%;
+  .notes {
+    font-size: 0.37rem;
   }
 }

@@ -1,15 +1,36 @@
-# gnome-sudoku-web
+# GNOME Sudoku Web
 
-A native browser implementation of a GNOME Sudoku-style web variant built with TypeScript + React + Vite.
+A true browser implementation of GNOME Sudoku style gameplay using **React + TypeScript + Vite**.
 
-## Run locally
+## Features
+
+- Play Sudoku directly in the browser (no container required)
+- Difficulty levels with seeded generator (`easy`, `medium`, `hard`)
+- Notes / pencil marks per cell
+- Undo / Redo
+- Desktop-like keyboard controls:
+  - Arrow keys: move selection
+  - `1`-`9`: enter value (or note in Notes mode)
+  - `Backspace` / `Delete`: clear value
+  - `Tab` / `Shift+Tab`: move selection
+  - `N`: toggle notes mode
+  - `Ctrl/Cmd+Z`, `Ctrl/Cmd+Y`, `Ctrl/Cmd+Shift+Z`: undo/redo
+- Conflict highlighting for invalid duplicates in row/column/box
+- Auto-save (debounced) and restore after reload
+- JSON export/import of game state
+- Timer enabled by default with toggle to disable
+- Accessible controls with focus ring and ARIA labels
+
+## Development
+
+Requirements: Node.js 20+ (or compatible modern Node version)
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local URL shown by Vite (usually `http://localhost:5173`).
+Open the local URL shown by Vite (default `http://localhost:5173`).
 
 ## Build
 
@@ -17,42 +38,24 @@ Open the local URL shown by Vite (usually `http://localhost:5173`).
 npm run build
 ```
 
-## Features
+## Tests
 
-- 9x9 Sudoku gameplay
-- Difficulty selector with built-in unique-solution puzzles (`Easy`, `Medium`, `Hard`)
-- Notes mode (pencil marks)
-- Conflict highlighting (row/column/box duplicates)
-- Undo/Redo buttons and keyboard shortcuts
-- Keyboard controls
-  - Arrow keys: move selection
-  - Tab / Shift+Tab: logical next/previous cell
-  - `1-9`: enter digit (or toggle note when Notes mode is on)
-  - Backspace/Delete/`0`: clear selected editable cell
-  - `Ctrl/Cmd+Z`: undo
-  - `Ctrl/Cmd+Y` or `Ctrl/Cmd+Shift+Z`: redo
-  - `N`: toggle notes mode
-- Persistence across page reloads (localStorage)
-  - puzzle id and givens
-  - current values
-  - notes
-  - selected cell
-  - difficulty
-  - undo/redo history
-  - timer status and elapsed time
-- Export current game state to JSON
-- Import previously exported JSON game state
-- Optional timer toggle (default on)
+```bash
+npm test
+```
 
-## Persistence behavior
+Unit tests cover Sudoku validation/conflict detection, solver behavior, and deterministic generator behavior.
 
-Game state is automatically saved to localStorage after every change. Reloading the page restores the game state, including timer progression (if timer is enabled).
+## Persistence format
 
-## Export/Import
+Game state is saved in browser `localStorage` and includes:
 
-- Click **Export** to download the current game state as JSON.
-- Click **Import** to load a previously exported JSON file.
+- givens
+- current values
+- notes
+- selected cell
+- difficulty and seed
+- elapsed time and timer toggle
+- undo/redo stacks
 
-## Assets and licensing
-
-This implementation currently uses original CSS/HTML and does not bundle GNOME/Adwaita icon assets.
+You can also export/import this state as JSON from the app controls.
