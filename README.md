@@ -6,7 +6,7 @@ A true browser implementation of GNOME Sudoku style gameplay using **React + Typ
 
 - Play Sudoku directly in the browser (no container required)
 - Difficulty levels with seeded generator (`easy`, `medium`, `hard`)
-- Notes / pencil marks per cell
+- Notes / pencil marks per cell (3 × 3 grid inside each cell, GNOME-style)
 - Undo / Redo
 - Desktop-like keyboard controls:
   - Arrow keys: move selection
@@ -21,22 +21,46 @@ A true browser implementation of GNOME Sudoku style gameplay using **React + Typ
 - Timer enabled by default with toggle to disable
 - Accessible controls with focus ring and ARIA labels
 
-## Development
+---
 
-Requirements: Node.js 20+ (or compatible modern Node version)
+## Running with Docker
+
+### Development (live-reload)
+
+```bash
+docker compose up dev
+```
+
+Open <http://localhost:5173> in your browser.  
+Source files are mounted into the container so edits are reflected immediately.
+
+### Production (nginx, optimised build)
+
+```bash
+docker compose --profile prod up --build prod
+```
+
+Open <http://localhost:8080>.  
+This runs a multi-stage build: Node 22 compiles the TypeScript bundle, then nginx 1.27 serves the resulting static files.
+
+---
+
+## Running without Docker
+
+Requirements: **Node.js 20+**
 
 ```bash
 npm install
+
+# Development server
 npm run dev
-```
 
-Open the local URL shown by Vite (default `http://localhost:5173`).
-
-## Build
-
-```bash
+# Production build (output in ./dist)
 npm run build
+npm run preview   # preview the production build locally
 ```
+
+---
 
 ## Tests
 
@@ -44,18 +68,34 @@ npm run build
 npm test
 ```
 
-Unit tests cover Sudoku validation/conflict detection, solver behavior, and deterministic generator behavior.
+Unit tests cover Sudoku validation/conflict detection, solver behaviour, and deterministic generator behaviour.
+
+## Linting
+
+```bash
+npm run lint
+```
+
+---
 
 ## Persistence format
 
-Game state is saved in browser `localStorage` and includes:
+Game state is saved in browser `localStorage` under the key `gnome-sudoku-web-save-v1` and includes:
 
-- givens
-- current values
-- notes
-- selected cell
-- difficulty and seed
-- elapsed time and timer toggle
-- undo/redo stacks
+| Field | Description |
+|-------|-------------|
+| `version` | Schema version (currently `1`) — bump to trigger graceful reset |
+| `difficulty` | `easy` / `medium` / `hard` |
+| `seed` | Deterministic puzzle seed |
+| `givens` | Which cells are fixed clues |
+| `values` | Current cell values |
+| `notes` | Pencil marks per cell |
+| `selected` | Active cell index |
+| `notesMode` | Whether notes mode is active |
+| `elapsedSeconds` | Timer value |
+| `timerEnabled` | Timer toggle state |
+| `undoStack` / `redoStack` | Move history |
 
-You can also export/import this state as JSON from the app controls.
+Corrupted or version-mismatched data is silently discarded and a fresh game starts.  
+You can also export/import the full state as JSON from the in-app controls.
+
