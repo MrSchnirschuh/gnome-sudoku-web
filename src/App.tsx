@@ -621,7 +621,17 @@ function App() {
               aria-label={`Row ${row + 1} Column ${col + 1}${given ? ' given' : ' editable'}`}
               aria-selected={selectedCell}
             >
-              {value !== 0 ? <span>{value}</span> : <span className="notes">{Array.from({ length: 9 }, (_, i) => (cellNotes.includes(i + 1) ? i + 1 : '·')).join(' ')}</span>}
+              {value !== 0 ? (
+                <span>{value}</span>
+              ) : (
+                <span className="notes" aria-label={cellNotes.length > 0 ? `Notes: ${cellNotes.join(', ')}` : 'Empty'}>
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <span key={i + 1} className="note-digit">
+                      {cellNotes.includes(i + 1) ? i + 1 : ''}
+                    </span>
+                  ))}
+                </span>
+              )}
             </button>
           )
         })}
